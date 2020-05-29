@@ -11,3 +11,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+.waves-effect {
+  margin-top: 25px;
+}
+
+.todo-submit {
+  background-color: #ffa000;
+}
+.todo-submit:hover {
+  background-color: #ffa000;
+}
