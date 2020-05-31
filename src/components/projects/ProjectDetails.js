@@ -7,7 +7,7 @@ import moment from 'moment'
 import TodoList from '../todos/TodoList'
 
 const ProjectDetails = (props) => {
-    const { project, auth, projectId } = props;
+    const { project, auth, todos } = props;
     if (!auth.uid) return <Redirect to='/signin' />
     if (project) {
         return (
@@ -38,7 +38,7 @@ const ProjectDetails = (props) => {
                             </form>
                         </div>
                         <div className="row">
-                            <TodoList projectId={projectId} />
+                            <TodoList todos={todos} />
                         </div>
                     </div>
                 </div>
@@ -55,19 +55,23 @@ const ProjectDetails = (props) => {
 }
 
 const mapStateToProps = (state, ownProps) => {
+    console.log(state)
+
     const id = ownProps.match.params.id;
     const projects = state.firestore.data.projects;
     const project = projects ? projects[id] : null
+    const todos = state.firestore.ordered.todos;
     return {
         project: project,
         auth: state.firebase.auth,
-        projectId: id
+        todos: todos
     }
 }
 
 export default compose(
     connect(mapStateToProps),
-    firestoreConnect([
-        { collection: 'projects' }
+    firestoreConnect(props => [
+        { collection: 'projects' },
+        { collection: 'todos', where:['projectId', '==', props.match.params.id]}
     ])
 )(ProjectDetails);

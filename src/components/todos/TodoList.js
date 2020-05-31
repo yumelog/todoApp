@@ -1,32 +1,17 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { firestoreConnect } from 'react-redux-firebase'
-import { compose } from 'redux'
+import TodoSummary from './TodoSummary'
 
-const TodoList = (props) => {
-    console.log('todos');
-    console.log(props);
+const TodoList = ({todos}) => {
+    console.log(todos);
     return (
         <div className="todo-list section">
-                    <p>todo</p>
+            { todos && todos.map(todo => {
+                return (
+                        <TodoSummary todo={todo} />
+                )
+            })}
         </div>
     )
 }
 
-const mapStateToProps = (state, ownProps) => {
-    const id = ownProps.match.params.id;
-    const projects = state.firestore.data.projects;
-    const project = projects ? projects[id] : null
-    return {
-        project: project,
-        auth: state.firebase.auth,
-        projectId: id
-    }
-}
-
-export default compose(
-    connect(mapStateToProps),
-    firestoreConnect([
-        { collection: 'todos', where: ['projectId', 'XXX'] }
-    ])
-)(TodoList);
+export default TodoList;
