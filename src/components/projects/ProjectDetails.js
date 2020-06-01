@@ -5,6 +5,7 @@ import { compose } from 'redux'
 import { Redirect } from 'react-router-dom'
 import moment from 'moment'
 import TodoList from '../todos/TodoList'
+import CreateTodo from '../todos/CreateTodo'
 
 const ProjectDetails = (props) => {
     const { project, auth, todos } = props;
@@ -27,17 +28,7 @@ const ProjectDetails = (props) => {
                     </div>
                     <div className="col s12 m5 offset-m1">
                         <div className="row">
-                            <form className="col s12">
-                                <div className="input-field col s6">
-                                    <input id="input_text" type="text" data-length="10" />
-                                    <label htmlFor="input_text">Input text</label>
-                                </div>
-                                <button className="btn todo-submit waves-effect waves-light" type="submit" name="action">Submit
-                                    <i className="material-icons right">send</i>
-                                </button>
-                            </form>
-                        </div>
-                        <div className="row">
+                            <CreateTodo />
                             <TodoList todos={todos} />
                         </div>
                     </div>
@@ -72,6 +63,6 @@ export default compose(
     connect(mapStateToProps),
     firestoreConnect(props => [
         { collection: 'projects' },
-        { collection: 'todos', where:['projectId', '==', props.match.params.id]}
+        { collection: 'todos', where: ['projectId', '==', props.match.params.id] }
     ])
 )(ProjectDetails);
